@@ -1,6 +1,14 @@
 const WebScraper = require('../src/scraper');
 const { delay } = require('../utils/helpers');
 
+// Parse command line arguments
+const args = process.argv.slice(2);
+const cliUsername = args[0] || 'ddavila';
+const cliCedula = args[1] || '1144072382';
+const cliMedico = args[2] || 'TBD';
+const cliFechaInicio = args[3];
+const cliFechaFin = args[4];
+
 async function openRisivysLogin() {
   const scraper = new WebScraper({
     headless: false, // Always show browser for this scraper
@@ -42,11 +50,11 @@ async function openRisivysLogin() {
     console.log('📝 Filling login form...');
     
     // Fill username field
-    await page.type('#username', 'ddavila');
+    await page.type('#username', cliUsername);
     await delay(500);
     
     // Fill password field  
-    await page.type('#password', '1144072382');
+    await page.type('#password', cliCedula);
     await delay(500);
     
     console.log('✅ Form filled successfully!');
@@ -80,25 +88,25 @@ async function openRisivysLogin() {
     console.log('✅ Successfully navigated to ListadoLeidos page!');
     console.log('📍 Final URL: https://risivys.hiruko.com.co:32117/common/ListadoLeidos/Lista');
     
-    // Calculate dates: first day of current month and today
-    const today = new Date();
-    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    
-    // Format dates as DD/MM/YYYY (common format for date pickers)
-    const formatDate = (date) => {
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const year = date.getFullYear();
-      //return `${day}/${month}/${year}`;
-      return `${year}-${month}-${day}`;
-    };
-    
-    const startDate = formatDate(firstDayOfMonth);
-    const endDate = formatDate(today);
-    
+    // Use provided dates or fallback to previous logic
+    let startDate = cliFechaInicio;
+    let endDate = cliFechaFin;
+    if (!startDate || !endDate) {
+      // Calculate dates: first day of current month and today
+      const today = new Date();
+      const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      const formatDate = (date) => {
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${year}-${month}-${day}`;
+      };
+      startDate = formatDate(firstDayOfMonth);
+      endDate = formatDate(today);
+    }
     console.log('📅 Filling date inputs...');
-    console.log(`   Start date (first day of month): ${startDate}`);
-    console.log(`   End date (today): ${endDate}`);
+    console.log(`   Start date: ${startDate}`);
+    console.log(`   End date: ${endDate}`);
     
     // Wait for date inputs to be available
     await page.waitForSelector('#dateInit', { visible: true, timeout: 5000 });
@@ -244,6 +252,18 @@ async function openRisivysLogin() {
           const oldPath = path.join(downloadPath, mostRecentFile.name);
           const newPath = path.join(downloadPath, customFilename);
           
+          // Call excel-transformer.js to transform the downloaded file
+          const { spawnSync } = require('child_process');
+          const transformerPath = path.join(__dirname, '../src/excel-transformer.js');
+          const result = spawnSync('node', [transformerPath, cliMedico], {
+            stdio: 'inherit',
+            env: process.env,
+            cwd: process.cwd(),
+          });
+          if (result.error) {
+            console.error('❌ Error running excel-transformer.js:', result.error);
+          }
+          
           // Rename the file
           fs.renameSync(oldPath, newPath);
           
@@ -272,12 +292,6 @@ async function openRisivysLogin() {
     console.log('📌 The browser will stay open for manual interaction.');
     console.log('💡 Press Ctrl+C in the terminal to close when you\'re done.');
     
-    // Keep the page open by waiting indefinitely
-    // This prevents the browser from closing automatically
-    await new Promise(() => {
-      // This promise never resolves, keeping the browser open
-      // The user can manually close it or use Ctrl+C
-    });
 
   } catch (error) {
     console.error('❌ Error during login process:', error);

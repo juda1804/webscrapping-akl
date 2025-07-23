@@ -1,0 +1,29 @@
+{
+  "name": "webscrapping-akila",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "bin": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "scrape-quotes": "node examples/quotes-scraper.js",
+    "automate-form": "node examples/form-automation.js",
+    "risivys": "node examples/risivys-scraper.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^7.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2",
+    "open": "^10.2.0",
+    "puppeteer": "^24.14.0",
+    "xlsx": "^0.18.5"
+  }
+}

@@ -1,70 +1,76 @@
-# Getting Started with Create React App
+# Frontend - Web Scraping & Excel Transformer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This React application provides two main functionalities:
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+### 1. Risivys Scraper
+- Web scraping functionality for Risivys platform
+- Collects data based on username, cedula, doctor name, and date range
+- Downloads results as Excel files
 
-### `npm start`
+### 2. Excel Transformer
+- Upload Excel files (.xlsx format)
+- Transform data with predefined column structure
+- Set custom doctor name for readings
+- Download transformed Excel files with "-r" suffix
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```bash
+npm install
+```
 
-### `npm test`
+## Development
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm start
+```
 
-### `npm run build`
+The application will open at `http://localhost:3000`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Build for Production
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm run build
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
 
-### `npm run eject`
+### Risivys Scraper Tab
+1. Fill in the required fields:
+   - Username
+   - Cedula
+   - Doctor name
+   - Start date
+   - End date
+2. Click "Run Scraper"
+3. The Excel file will be automatically downloaded
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Excel Transformer Tab
+1. Enter the doctor name who will perform the reading
+2. Click "Seleccionar archivo Excel" to choose an Excel file
+3. Click "Transformar y Descargar" to process and download the transformed file
+4. The output file will have "-r" added to the original filename
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Dependencies
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- React 19.1.0
+- Material-UI 7.2.0
+- XLSX 0.18.5 (for Excel file processing)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## File Structure
 
-## Learn More
+```
+src/
+├── App.js              # Main application with tabs
+├── ExcelTransformer.js # Excel transformation component
+└── App.css            # Styles
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Notes
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- The Excel transformer processes files entirely in the browser
+- No server-side processing required for Excel transformation
+- Files are automatically downloaded after processing
+- Supports .xlsx format only

@@ -43,3 +43,4 @@ Thumbs.db
 *.temp
 
 /downloads
+/node_modules
